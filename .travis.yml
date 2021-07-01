@@ -15,7 +15,6 @@ install: mvn clean install -DskipTests=true
 
 script:
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar -Dsonar.login=e020a8e4e413d2d71aceefae24b5f660fbc9f9e3
-  - mvn verify -Ppit -Dmaven.javadoc.skip=true
 
 
 
