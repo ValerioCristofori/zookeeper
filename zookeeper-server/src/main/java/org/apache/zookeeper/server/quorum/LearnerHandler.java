@@ -1099,7 +1099,7 @@ public class LearnerHandler extends ZooKeeperThread {
         queuedPacketsSize.addAndGet(packetSize(p));
     }
 
-    static long packetSize(QuorumPacket p) {
+    public static long packetSize(QuorumPacket p) {
         /* Approximate base size of QuorumPacket: int + long + byte[] + List */
         long size = 4 + 8 + 8 + 8;
         byte[] data = p.getData();
