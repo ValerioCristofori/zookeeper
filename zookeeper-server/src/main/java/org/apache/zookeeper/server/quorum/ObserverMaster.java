@@ -145,7 +145,7 @@ public class ObserverMaster extends LearnerMaster implements Runnable {
         }
     };
 
-    ObserverMaster(QuorumPeer self, FollowerZooKeeperServer zks, int port) {
+    public ObserverMaster(QuorumPeer self, FollowerZooKeeperServer zks, int port) {
         this.self = self;
         this.zks = zks;
         this.port = port;
@@ -352,11 +352,11 @@ public class ObserverMaster extends LearnerMaster implements Runnable {
         return (self == null) ? null : self.authServer;
     }
 
-    void proposalReceived(QuorumPacket qp) {
+    public void proposalReceived(QuorumPacket qp) {
         proposedPkts.add(new QuorumPacket(Leader.INFORM, qp.getZxid(), qp.getData(), null));
     }
 
-    private synchronized QuorumPacket removeProposedPacket(long zxid) {
+    public synchronized QuorumPacket removeProposedPacket(long zxid) {
         QuorumPacket pkt = proposedPkts.peek();
         if (pkt == null || pkt.getZxid() > zxid) {
             LOG.debug("ignore missing proposal packet for {}", Long.toHexString(zxid));
@@ -374,7 +374,7 @@ public class ObserverMaster extends LearnerMaster implements Runnable {
         return pkt;
     }
 
-    private synchronized void cacheCommittedPacket(final QuorumPacket pkt) {
+    public synchronized void cacheCommittedPacket(final QuorumPacket pkt) {
         committedPkts.add(pkt);
         pktsSize += LearnerHandler.packetSize(pkt);
         // remove 5 packets for every one added as we near the size limit
@@ -540,4 +540,7 @@ public class ObserverMaster extends LearnerMaster implements Runnable {
         }
     }
 
+    public ConcurrentLinkedQueue<QuorumPacket> getCommittedPkts() {
+        return committedPkts;
+    }
 }
