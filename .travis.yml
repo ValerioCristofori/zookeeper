@@ -2,11 +2,16 @@ dist: trusty
 language: java
 jdk:
 - openjdk11
+cache:
+  directories:
+    - "$HOME/.m2"
 addons:
   sonarcloud:
     organization: "valeriocristofori"
     token:
       secure: "IWqr3gHsAAT1fr+kAUYklo6rvskHNBVPdSJlf81Rg93LNkAzMU9qB0gfTwzmXgrYHnZKM/e5NCROJPxu8ccG4MRVNM+hhhHalx1qgbVc0B8Ec1tkHcWPFstm6S1/bHE/xdeeMV35M46gYM6RWEGcTEg9Aqi1eDpZ9RW9ETO0dTUK4O5k7DeJKmW7HIkWKqmyUw7yLbh02y5wdPqPHuMRqGp0K2bK9M6zJvS3+AM9zNA1hMP1lxrdSSItWBw+PJZjIanesAjc1/5h+xCHuCKPgNJ3Tpp/0VSLIrpaB3QPEjCd5uUg3FzgZy5MphKl3o6Z6fyufx67hkEJr7XuMX3oNhZRvFKHUxdBNdhLDvht1EZ0dWBGBLeKILW2cahmbOQ19vxpxKuYGiwuHR5YKfmQqFOHocEE2pGs8hJoHPIK7e9ScpJvy4VzDMc1rLrUMopuSJi9a8/nioudlMkORzPInRtg1iQL6nYx0ki7b15Uhq3osof+BT0MV+VP1c7a4YVPL+GKOkLKEhuvn/exrJGMz1x6ZpVgChm/SzZfNmRW1EIy/F1n9xLEUmdGPHGYjcEieQlIF/vWMYXCXslIY9pyawGNvn3knqaeKTBJtFMS3BOa1v00038IEKo0l8JDgy5NXVkynUQuDhRWnfV4V8jkMl/5QoNkF8HkPJuH2dVkeIg="
+
+install: mvn clean install -DskipTests=true
 script:
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar -Dsonar.login=e020a8e4e413d2d71aceefae24b5f660fbc9f9e3
   - mvn verify -Ppit -Dmaven.javadoc.skip=true
