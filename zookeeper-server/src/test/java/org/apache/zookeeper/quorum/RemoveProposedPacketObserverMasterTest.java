@@ -54,8 +54,8 @@ public class RemoveProposedPacketObserverMasterTest {
         inputs.add(new TestParameters(false, FIRST_PKT_ID-1, true));
         inputs.add(new TestParameters(false, FIRST_PKT_ID, false));
 
-        inputs.add(new TestParameters(false, FIRST_PKT_ID+1, true));
-        inputs.add(new TestParameters(true, FIRST_PKT_ID, true));
+        //inputs.add(new TestParameters(false, FIRST_PKT_ID+1, true));
+        //inputs.add(new TestParameters(true, FIRST_PKT_ID, true));
 
         return inputs;
     }
