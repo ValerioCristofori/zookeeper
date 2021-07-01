@@ -31,6 +31,11 @@
   <name>Apache ZooKeeper - Server</name>
   <description>ZooKeeper server</description>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.github.spotbugs</groupId>
@@ -40,13 +45,17 @@
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-library</artifactId>
+      <artifactId>hamcrest-all</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-collections4</artifactId>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.zookeeper</groupId>
@@ -89,13 +98,13 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-client</artifactId>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -114,9 +123,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-       <groupId>io.dropwizard.metrics</groupId>
-       <artifactId>metrics-core</artifactId>
-       <scope>provided</scope>
+      <groupId>io.dropwizard.metrics</groupId>
+      <artifactId>metrics-core</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
@@ -148,23 +157,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-runner</artifactId>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -172,13 +166,18 @@
       <artifactId>snappy-java</artifactId>
       <scope>provided</scope>
     </dependency>
-      <dependency>
-          <groupId>commons-io</groupId>
-          <artifactId>commons-io</artifactId>
-          <version>2.6</version>
-          <scope>compile</scope>
-      </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.pitest</groupId>
+      <artifactId>pitest-maven</artifactId>
+      <version>1.6.2</version>
+      <type>maven-plugin</type>
+    </dependency>
   </dependencies>
+
 
   <build>
     <plugins>
@@ -215,6 +214,31 @@
                 <source>${project.build.directory}/generated-sources/java</source>
               </sources>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>1.6.2</version>
+        <configuration>
+          <maxMutationsPerClass>20</maxMutationsPerClass>
+          <targetClasses>
+            <param>org.apache.zookeeper.CommandOptionParser</param>
+            <param>org.apache.zookeeper.server.quorum.ObserverMaster</param>
+          </targetClasses>
+          <targetTests>
+            <param>org.apache.zookeeper.quorum.CacheCommittedPacketObserverMasterTest</param>
+            <param>org.apache.zookeeper.quorum.RemoveProposedPacketObserverMasterTest</param>
+            <param>org.apache.zookeeper.ParseCommandZookeeperMainTest</param>
+            <param>org.apache.zookeeper.ParseOptionsZookeeperMainTest</param>
+          </targetTests>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>mutationCoverage</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
@@ -261,23 +285,24 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <includes>
-            <include>**/*Test.java</include>
-          </includes>
-          <forkCount>${surefire-forkcount}</forkCount>
-          <reuseForks>false</reuseForks>
-          <argLine>-Xmx512m -Dtest.junit.threads=${surefire-forkcount} -Dzookeeper.junit.threadid=${surefire.forkNumber} -javaagent:${org.jmockit:jmockit:jar}</argLine>
-          <basedir>${project.basedir}</basedir>
-          <systemPropertyVariables>
-            <build.test.dir>${project.build.directory}/surefire</build.test.dir>
-            <zookeeper.DigestAuthenticationProvider.superDigest>super:D/InIHSb7yEEbrWz8b9l71RjZJU=</zookeeper.DigestAuthenticationProvider.superDigest>
-          </systemPropertyVariables>
-        </configuration>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.6</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
-	  
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -290,7 +315,9 @@
           </execution>
         </executions>
       </plugin>
-     </plugins>
+    </plugins>
   </build>
+
+
 
 </project>
