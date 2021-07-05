@@ -124,7 +124,7 @@ public class ZooKeeperMain {
      * A storage class for both command line options and shell commands.
      *
      */
-    static class MyCommandOptions {
+    public static class MyCommandOptions {
 
         private Map<String, String> options = new HashMap<String, String>();
         private List<String> cmdArgs = null;

@@ -230,7 +230,6 @@
         <configuration>
           <maxMutationsPerClass>20</maxMutationsPerClass>
           <targetClasses>
-            <param>org.apache.zookeeper.CommandOptionParser</param>
             <param>org.apache.zookeeper.server.quorum.ObserverMaster</param>
           </targetClasses>
           <targetTests>

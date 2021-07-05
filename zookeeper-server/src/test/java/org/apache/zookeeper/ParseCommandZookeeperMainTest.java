@@ -59,7 +59,7 @@ public class ParseCommandZookeeperMainTest {
     @Test
     public void parseCommandTest(){
 
-        CommandOptionParser optClass = new CommandOptionParser();
+        ZooKeeperMain.MyCommandOptions optClass = new ZooKeeperMain.MyCommandOptions();
 
         boolean actResult;
 

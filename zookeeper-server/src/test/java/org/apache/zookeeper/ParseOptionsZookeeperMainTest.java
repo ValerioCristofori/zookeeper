@@ -61,7 +61,7 @@ public class ParseOptionsZookeeperMainTest {
     @Test
     public void parseOptionsTest(){
 
-        CommandOptionParser optClass = new CommandOptionParser();
+        ZooKeeperMain.MyCommandOptions optClass = new ZooKeeperMain.MyCommandOptions();
 
         boolean actResult;
 
