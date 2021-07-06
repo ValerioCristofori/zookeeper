@@ -48,19 +48,19 @@ public class CacheCommittedPacketObserverMasterTest {
 
         //some auth info - not relevant to the test
         Id dummyId = new Id("dummy", "dummy");
-        List<Id> dummyAuthInfo = new ArrayList<Id>();
+        List<Id> dummyAuthInfo = new ArrayList<>();
         dummyAuthInfo.add(dummyId);
 
 
         //filling the byte arrays with dummy data
         byte[] almostOverSizedArray = new byte[299-28];
         byte[] overSizedArray = new byte[350];
-        byte[] reallyOverSizedArray = new byte[6713523];
+        byte[] overOverSizedArray = new byte[6713523];
 
         QuorumPacket undersizedPkt = new QuorumPacket(0, 1234, "dummyy".getBytes(), dummyAuthInfo);
         QuorumPacket almostOverSizedPkt = new QuorumPacket(0, 1234, almostOverSizedArray, dummyAuthInfo);
         QuorumPacket overSizedPkt = new QuorumPacket(0, 1234, overSizedArray, dummyAuthInfo);
-        QuorumPacket reallyOverSizedPkt = new QuorumPacket(0, 1234, reallyOverSizedArray, dummyAuthInfo);
+        QuorumPacket overOverSizedPkt = new QuorumPacket(0, 1234, overOverSizedArray, dummyAuthInfo);
 
 
         List<TestParameters> inputs = new ArrayList<>();
@@ -70,7 +70,7 @@ public class CacheCommittedPacketObserverMasterTest {
 
         inputs.add(new TestParameters(true, almostOverSizedPkt));
         inputs.add(new TestParameters(true, overSizedPkt));
-        inputs.add(new TestParameters(true, reallyOverSizedPkt));
+        inputs.add(new TestParameters(true, overOverSizedPkt));
 
         return inputs;
 

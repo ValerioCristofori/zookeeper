@@ -33,9 +33,13 @@ public class ParseOptionsZookeeperMainTest {
 
         //valid
         inputs.add(new TestParameters(true, new String[]{"-r", "cmd"}));
+        inputs.add(new TestParameters(true, new String[]{"-r"}));
         inputs.add(new TestParameters(true, new String[]{"-server", "argument"}));
         inputs.add(new TestParameters(true, new String[]{"-timeout", "argument"}));
         inputs.add(new TestParameters(true, new String[]{"-client-configuration", "argument"}));
+        inputs.add(new TestParameters(true , new String[]{"cmd", "arg", "-server", "argument"}));
+        inputs.add(new TestParameters(true, new String[]{"-waitforconnection"}));
+
         return inputs;
 
     }
