@@ -62,7 +62,6 @@ public class CacheCommittedPacketObserverMasterTest {
         QuorumPacket overSizedPkt = new QuorumPacket(0, 1234, overSizedArray, dummyAuthInfo);
         QuorumPacket overOverSizedPkt = new QuorumPacket(0, 1234, overOverSizedArray, dummyAuthInfo);
 
-
         List<TestParameters> inputs = new ArrayList<>();
 
         inputs.add(new TestParameters(false, null));
