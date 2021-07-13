@@ -72,6 +72,7 @@ public class ParseOptionsZookeeperMainTest {
         try {
             actResult = optClass.parseOptions(args);
         } catch (NullPointerException e) {
+            // in presenza di null pointer controllo che il risultato aspettato sia false
             Assert.assertFalse(expResult);
             return;
         }

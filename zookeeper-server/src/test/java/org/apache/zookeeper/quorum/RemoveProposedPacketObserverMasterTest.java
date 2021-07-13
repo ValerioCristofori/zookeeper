@@ -1,7 +1,6 @@
 package org.apache.zookeeper.quorum;
 
 import org.apache.zookeeper.common.X509Exception;
-import org.apache.zookeeper.server.quorum.LearnerHandler;
 import org.apache.zookeeper.server.quorum.ObserverMaster;
 import org.apache.zookeeper.server.quorum.QuorumPacket;
 import org.junit.Assert;
@@ -22,20 +21,17 @@ public class RemoveProposedPacketObserverMasterTest {
     private static final int LAST_PKT_ID = 50;
     private static final int FIRST_PKT_ID = 25;
 
-    //packet to remove
+    // pacchetto da rimuovere
     private static QuorumPacket remQp;
 
-    //Observer class to test
+    //Observer class
     private ObserverMaster obsM;
 
-    //arguments
     private long zxid;
     private boolean fillQueue;
     private boolean expResult;
 
     public RemoveProposedPacketObserverMasterTest(TestParameters input) {
-        //the arguments of the constructor are not used in the method we are testing
-        //we can leave them as null
         obsM = new ObserverMaster(null, null, 80);
 
         this.zxid = input.getZxid();
@@ -46,9 +42,7 @@ public class RemoveProposedPacketObserverMasterTest {
 
 
     @Parameterized.Parameters
-    public static Collection<TestParameters> getTestParameters() throws NoSuchFieldException, X509Exception, IllegalAccessException, IOException {
-        //function signature
-        //QuorumPacket removeProposedPacket(long zxid)
+    public static Collection<TestParameters> getTestParameters() {
         List<TestParameters> inputs = new ArrayList<>();
 
         inputs.add(new TestParameters(false, FIRST_PKT_ID-1, true));
@@ -86,11 +80,12 @@ public class RemoveProposedPacketObserverMasterTest {
 
 
     @Before
-    public void setUpQueue() {
-        //add some dummy packets in the queue if necessary
+    public void setup() {
         if (fillQueue) {
+            //coda non vuota, inserisco il pacchetto da eliminare
             remQp = new QuorumPacket(0, FIRST_PKT_ID, "removed".getBytes(), null);
             obsM.proposalReceived(remQp);
+            // aggiungo qualche pacchetto dummy alla coda
             for (int i = FIRST_PKT_ID+1; i < LAST_PKT_ID; i++) {
                 QuorumPacket qp = new QuorumPacket(0, i, "dummy".getBytes(), null);
                 obsM.proposalReceived(qp);
@@ -100,7 +95,7 @@ public class RemoveProposedPacketObserverMasterTest {
     }
 
     @Test
-    public void startForwardingTest() {
+    public void start() {
 
         QuorumPacket result;
 
